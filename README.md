@@ -1,6 +1,9 @@
 # tutorial_prj
 
 ## Project setup
+
+create ```mongodb.yml``` in config folder like as ```momgodb.yml.sample```
+
 ```
 npm install
 ```
