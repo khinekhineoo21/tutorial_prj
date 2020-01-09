@@ -1,0 +1,9 @@
+test:
+  url: mongodb://localhost:27017/infoDB
+  secret: secret-test
+dev:
+  url: mongodb://localhost:27017/infoDB
+  secret: secret-dev
+prod:
+  url: mongodb://localhost:27017/infoDB
+  secret: secret-prod
