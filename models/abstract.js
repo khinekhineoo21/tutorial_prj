@@ -1,0 +1,22 @@
+'use strict';
+const CustomErrors = require('../utils/customUtils');
+const CustomError = CustomErrors.CustomError;
+
+/**
+   * If a CustomError object is passed, it will just throw. Otherwise, create a CustomError object and throw.
+   * @param {CustomError|Error} error error object
+   * @param {string} message error message
+   * @param {boolean} forceUpdateMessage Force overwriting error message with argument
+   * @throws {CustomError} CustomError
+   */
+class AbstractModel {
+    throwCustomError(error, message) {
+        if(error instanceof CustomError) {
+            throw error;
+        }
+        throw new CustomError(message);
+    }
+ 
+}
+
+module.exports = AbstractModel;

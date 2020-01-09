@@ -1,0 +1,41 @@
+{
+  "name": "graphql-express-mongodb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "apollo-server-express": "^1.4.0",
+    "bcrypt-nodejs": "0.0.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "graphql": "^14.5.8",
+    "graphql-tools": "^4.0.6",
+    "js-yaml": "^3.13.1",
+    "moment": "^2.24.0",
+    "mongoose": "^5.7.12",
+    "morgan": "^1.9.1",
+    "nodemon": "^2.0.1",
+    "validator": "^12.1.0"
+  },
+  "devDependencies": {
+    "cross-env": "^6.0.3"
+  },
+  "scripts": {
+    "test": "cross-env NODE_ENV=test nodemon app.js --ext js,graphql",
+    "start:dev": "cross-env NODE_ENV=dev nodemon app.js --ext js,graphql",
+    "start:test": "cross-env NODE_ENV=test nodemon app.js --ext js,graphql",
+    "start:prod": "cross-env NODE_ENV=prod nodemon app.js --ext js,graphql",
+    "start": "cross-env NODE_ENV=local nodemon app.js --ext js,graphql"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/utkarshp21/graphql-server-setup.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/utkarshp21/graphql-server-setup/issues"
+  },
+  "homepage": "https://github.com/utkarshp21/graphql-server-setup#readme"
+}

@@ -1,0 +1,104 @@
+type Query {
+  getUser(userId: ID!): User!
+  getAllUsers: [User]
+  getPostByUser: [Post]
+  getAllPosts: [Post]
+}
+
+type Mutation {
+  signUp(user: SignUpInput): signUpReturn!
+  signUpAuthenticate(token: String): User!
+  login(email: String, password: String): AuthPayload!
+  authenticate: User!
+  logout: User!
+  logoutAllDevice: User!
+  changePassword(password: passwordChangeInput): User!
+  changePasswordAuthenticate(token: String): User!
+  changeEmail(email: String!): User!
+  changeEmailAuthentication(token: String!): User!
+  passwordReset(email: String): Boolean
+  passwordResetAuthenticate(reset: passwordResetAuthInput): Boolean
+  createUser(user: CreateUserInput): User!
+  operateUser(userId: ID!, operation: UserOperation!): User!
+  deleteUser(userId: ID!): User!
+  createPost(post: PostCreateInput): Post!
+  updatePost(postId: ID!, post: PostUpdateInput!): Post!
+  deletePost(postId: ID!): Post!
+}
+
+type User {
+  id: ID!
+  email: String
+  username: String
+  authStatus: Int
+  suspendStatus: Int
+  userStatus: Int
+  createdAt: String
+  updatedAt: String
+}
+
+type signUpReturn {
+    user: User!
+    token: String!
+}
+
+### Input
+input SignUpInput {
+  username: String!
+  email: String!
+  password: String!
+}
+
+input CreateUserInput {
+  username: String!
+  email: String!
+  password: String!
+  userStatus: UserStatus!
+}
+
+input passwordChangeInput {
+  oldPassword: String!
+  newPassword: String!
+  confirmPassword: String!
+}
+
+input passwordResetAuthInput {
+  token: String!
+  newPassword: String!
+  confirmPassword: String!
+}
+
+type AuthPayload {
+  user: User!
+  token: String!
+}
+
+type Post {
+  postId: ID!
+  postTitle: String
+  postDescription: String
+  author: User!
+  createdAt: String
+  updatedAt: String  
+}
+
+input PostCreateInput {
+  postTitle: String!
+  postDescription: String!  
+}
+
+input PostUpdateInput {
+  postTitle: String!
+  postDescription: String!
+}
+
+enum UserOperation {
+  suspend
+  unsuspend
+  normal
+}
+
+enum UserStatus {
+  admin
+  normalUser
+}
