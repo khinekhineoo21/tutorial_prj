@@ -1,4 +1,4 @@
-# tutorial_prj
+# Node.js MongoDB Tutorial
 
 - an application with Node.js Express & MongoDB
 - contains the CRUD operations related to the users and posts
