@@ -1,5 +1,8 @@
 # tutorial_prj
 
+- an application with Node.js Express & MongoDB
+- contains the CRUD operations related to the users and posts
+
 ## Project setup
 
 create ```mongodb.yml``` in config folder like as ```momgodb.yml.sample```
