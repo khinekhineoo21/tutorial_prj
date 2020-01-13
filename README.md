@@ -5,7 +5,7 @@
 
 ## Project setup
 
-create ```mongodb.yml``` in config folder like as ```momgodb.yml.sample```
+create ```mongodb.yml``` in config folder like as ```mongodb.yml.sample```
 
 ```
 npm install
