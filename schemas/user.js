@@ -27,7 +27,7 @@ const UserSchema = new Schema({
         type: Number,
         required: true
     },
-    userStatus: {
+    userRole: {
         type: Number,
         required: true
     },

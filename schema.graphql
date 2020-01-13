@@ -6,18 +6,18 @@ type Query {
 }
 
 type Mutation {
-  signUp(user: SignUpInput): signUpReturn!
+  signUp(user: SignUpInput): result!
   signUpAuthenticate(token: String): User!
-  login(email: String, password: String): AuthPayload!
+  login(email: String, password: String): result!
   authenticate: User!
   logout: User!
   logoutAllDevice: User!
-  changePassword(password: passwordChangeInput): User!
+  changePassword(password: passwordChangeInput): result!
   changePasswordAuthenticate(token: String): User!
-  changeEmail(email: String!): User!
+  changeEmail(email: String!): result!
   changeEmailAuthentication(token: String!): User!
-  passwordReset(email: String): Boolean
-  passwordResetAuthenticate(reset: passwordResetAuthInput): Boolean
+  passwordReset(email: String): condition!
+  passwordResetAuthenticate(passwordReset: passwordResetAuthInput): Boolean
   createUser(user: CreateUserInput): User!
   operateUser(userId: ID!, operation: UserOperation!): User!
   deleteUser(userId: ID!): User!
@@ -32,14 +32,19 @@ type User {
   username: String
   authStatus: Int
   suspendStatus: Int
-  userStatus: Int
+  userRole: Int
   createdAt: String
   updatedAt: String
 }
 
-type signUpReturn {
+type result {
     user: User!
     token: String!
+}
+
+type condition {
+  reset: Boolean!
+  token: String!
 }
 
 ### Input
@@ -53,7 +58,7 @@ input CreateUserInput {
   username: String!
   email: String!
   password: String!
-  userStatus: UserStatus!
+  userRole: UserRole!
 }
 
 input passwordChangeInput {
@@ -66,11 +71,6 @@ input passwordResetAuthInput {
   token: String!
   newPassword: String!
   confirmPassword: String!
-}
-
-type AuthPayload {
-  user: User!
-  token: String!
 }
 
 type Post {
@@ -98,7 +98,7 @@ enum UserOperation {
   normal
 }
 
-enum UserStatus {
+enum UserRole {
   admin
   normalUser
 }
