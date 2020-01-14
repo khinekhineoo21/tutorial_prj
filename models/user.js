@@ -18,7 +18,7 @@ class UserModel extends AbstractModel {
       this.username = params.username;
       this.authStatus = params.authStatus;
       this.suspendStatus = params.suspendStatus;
-      this.userRole = params.userRole;
+      this.role = params.role;
       this.createdAt = params.createdAt;
       this.updatedAt = params.updatedAt;
     }
@@ -87,7 +87,7 @@ class UserModel extends AbstractModel {
         password: this.password,
         username: params.user.username,
         authStatus: this.authStatus.noAuth,
-        userRole: users.length === 0 ? this.userRole.admin : this.userRole.normalUser,
+        role: users.length === 0 ? this.role.admin : this.role.normalUser,
         suspendStatus: this.suspendStatus.active,
         createdAt: moment().format('YYYY-M-D HH:mm A'),
         updatedAt: moment().format('YYYY-M-D HH:mm A'),
@@ -114,10 +114,9 @@ class UserModel extends AbstractModel {
         this.username = params.user.username;
       }
       if(params.user.password !== undefined) {
-        const errors = await this.validatePassword(params.user.password);
-        if(errors.length > 0) {
-          throw new CustomError(errors);
-        }
+       if(params.user.password.length < 8) {
+        throw new CustomError("Password must be at least 8 characters.");
+       }
         this.password = await CustomUtils.hashPassword(params.user.password);
       }
       this.updatedAt = moment().format('YYYY-M-D HH:mm A');
@@ -136,7 +135,7 @@ class UserModel extends AbstractModel {
           username: this.username,
           password: this.password,
           authStatus: this.authStatus,
-          userRole: this.userRole,
+          role: this.role,
           suspendStatus: this.suspendStatus,
           updatedAt: this.updatedAt
         }
@@ -166,11 +165,11 @@ class UserModel extends AbstractModel {
           this.suspendStatus = UserModel.suspendStatus.active;
           break;
         case "normal":
-          this.userRole = UserModel.userRole.normalUser;
+          this.role = UserModel.role.normalUser;
           break;
         case "createUser":
           this.authStatus = UserModel.authStatus.authed;
-          this.userRole = UserModel.userRole[params.userRole];
+          this.role = UserModel.role[params.role];
         default:
           break;
       }
@@ -203,8 +202,7 @@ class UserModel extends AbstractModel {
       const messages = [];
       messages.push(
         ...CustomValidator.validateString("Password", password, {
-          min: 8,
-          max: 20
+          min: 8
         })
       );
       return messages;
@@ -226,20 +224,17 @@ class UserModel extends AbstractModel {
       }    
       messages.push(
         ...CustomValidator.validateString("oldPassword", params.oldPassword, {
-          min: 8,
-          max: 20
+          min: 8
         })
       );    
       messages.push(
         ...CustomValidator.validateString("newPassword", params.newPassword, {
-          min: 8,
-          max: 20
+          min: 8
         })
       );    
       messages.push(
         ...CustomValidator.validateString("confirmPassword", params.confirmPassword, { 
-          min: 8, 
-          max: 20 
+          min: 8
         })
       );
       return messages;
@@ -255,7 +250,7 @@ class UserModel extends AbstractModel {
       if(params.newPassword !== params.confirmPassword) {
         messages.push("newpassword and confirmPassword are not match!");
       }
-      messages.push(...CustomValidator.validateString("newPassword", params.newPassword, { min: 8, max: 20}));
+      messages.push(...CustomValidator.validateString("newPassword", params.newPassword, { min: 8 }));
       return messages;
     }
 
@@ -300,7 +295,7 @@ class UserModel extends AbstractModel {
         password: params.password !== undefined ? params.password: null,
         authStatus: params.authStatus !== undefined ? params.authStatus: null,
         suspendStatus: params.suspendStatus !== undefined ? params.suspendStatus: null,
-        userRole: params.userRole !== undefined ? params.userRole: null,
+        role: params.role !== undefined ? params.role: null,
         createdAt: params.createdAt !== undefined ? params.createdAt: null,
         updatedAt: params.updatedAt !== undefined ? params.updatedAt: null
       }
@@ -325,7 +320,7 @@ UserModel.authStatus = {
   noAuth: 0    
 }
   
-UserModel.userRole = {
+UserModel.role = {
   admin: 1,
   normalUser: 0
 }

@@ -42,7 +42,7 @@ class UserService extends AbstractService {
     static async adminUser(context) {
         try{
             const user = await this.authenticate(context);
-            if(user.userRole !== Model.User.userRole.admin) {
+            if(user.role !== Model.User.role.admin) {
                 super.throwCustomError(user, "Access Denied!Please login with admin account.");
             }
 
@@ -61,7 +61,7 @@ class UserService extends AbstractService {
     static async normalUser(context) {
         try{
             const user = await this.authenticate(context);
-            if(user.userRole === Model.User.userRole.admin) {
+            if(user.role === Model.User.role.admin) {
                 super.throwCustomError(user, "Access Denied!Please login with user account.");
             }
 
@@ -86,7 +86,7 @@ class UserService extends AbstractService {
             } else {
                 if(user && user.authStatus === Model.User.authStatus.authed) {
                     super.throwCustomError('user', 'Email is already registered!')
-                }else if (user && user.authStatus !== Model.User.authStatus.authed) {
+                }else if (user && user.authStatus !== Model.User.authStatus.authed) {                    
                     await user.merge(params);
                     user.update();
                 }
@@ -189,7 +189,7 @@ class UserService extends AbstractService {
           if (!user) {
             user = await Model.User.build(params);
             user.authStatus = Model.User.authStatus.authed;
-            user.userRole = Model.User.userRole[params.user.userRole];
+            user.role = Model.User.role[params.user.role];
             user.create();
           } else {
             await user.merge(params);

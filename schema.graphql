@@ -32,7 +32,7 @@ type User {
   username: String
   authStatus: Int
   suspendStatus: Int
-  userRole: Int
+  role: Int
   createdAt: String
   updatedAt: String
 }
@@ -58,7 +58,7 @@ input CreateUserInput {
   username: String!
   email: String!
   password: String!
-  userRole: UserRole!
+  role: role!
 }
 
 input passwordChangeInput {
@@ -98,7 +98,7 @@ enum UserOperation {
   normal
 }
 
-enum UserRole {
+enum role {
   admin
   normalUser
 }

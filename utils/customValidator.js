@@ -38,12 +38,8 @@ class CustomValidator {
         messages.push(`${name} must be exactly ${option.length} characters.`);
       }
     } else if (!validator.isLength(str + "", option)) {
-      if (typeof option.min === "number" && typeof option.max === "number") {
-        messages.push(`${name} must be ${option.min}~${option.max} length.`);
-      } else if (typeof option.min === "number") {
+      if (typeof option.min === "number") {
         messages.push(`${name} must be at least ${option.min} characters.`);
-      } else if (typeof option.max === "number") {
-        messages.push(`${name} must be at most ${option.max} characters.`);
       } else {
         messages.push(`${name} must be valide value.`);
       }
