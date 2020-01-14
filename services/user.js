@@ -42,7 +42,7 @@ class UserService extends AbstractService {
     static async adminUser(context) {
         try{
             const user = await this.authenticate(context);
-            if(user.userStatus !== Model.User.userStatus.admin) {
+            if(user.role !== Model.User.role.admin) {
                 super.throwCustomError(user, "Access Denied!Please login with admin account.");
             }
 
@@ -61,7 +61,7 @@ class UserService extends AbstractService {
     static async normalUser(context) {
         try{
             const user = await this.authenticate(context);
-            if(user.userStatus === Model.User.userStatus.admin) {
+            if(user.role === Model.User.role.admin) {
                 super.throwCustomError(user, "Access Denied!Please login with user account.");
             }
 
@@ -86,7 +86,7 @@ class UserService extends AbstractService {
             } else {
                 if(user && user.authStatus === Model.User.authStatus.authed) {
                     super.throwCustomError('user', 'Email is already registered!')
-                }else if (user && user.authStatus !== Model.User.authStatus.authed) {
+                }else if (user && user.authStatus !== Model.User.authStatus.authed) {                    
                     await user.merge(params);
                     user.update();
                 }
@@ -165,12 +165,12 @@ class UserService extends AbstractService {
 
             await token.create();
 
-            const payload = {
+            const result = {
                 user,
                 token: token.token
             }
 
-        return payload;
+        return result;
 
         }
         catch(error) {
@@ -189,7 +189,7 @@ class UserService extends AbstractService {
           if (!user) {
             user = await Model.User.build(params);
             user.authStatus = Model.User.authStatus.authed;
-            user.userStatus = Model.User.userStatus[params.user.userStatus];
+            user.role = Model.User.role[params.user.role];
             user.create();
           } else {
             await user.merge(params);
@@ -350,7 +350,12 @@ class UserService extends AbstractService {
 
             await token.create();
 
-        return currentUser;
+            const result = {
+                user: currentUser,
+                token: token.token
+            }
+
+        return result;
 
         }catch(error) {
             super.throwCustomError(error, "An error occured in password changing process!");
@@ -408,7 +413,12 @@ class UserService extends AbstractService {
 
             await token.create();
 
-        return currentUser;
+            const result = {
+                user: currentUser,
+                token: token.token
+            }
+
+        return result;
 
         }catch(error) {
             super.throwCustomError(error, "An error occured in email change process!");
@@ -464,7 +474,12 @@ class UserService extends AbstractService {
 
             token.create();
 
-        return true;
+            const result = {
+                reset: true,
+                token: token.token
+            }
+
+        return result;
 
         }catch(error) {
             super.throwCustomError(error, "An error occured in password reset!")
@@ -478,7 +493,7 @@ class UserService extends AbstractService {
      */
     static async passwordResetAuthenticate(params) {
         try {
-            const token = await Model.Token.getByToken(params.reset.token);
+            const token = await Model.Token.getByToken(params.passwordReset.token);
             if(!token) {
                 super.throwCustomError(token, "Token not found!");
             }else if(token && (moment(token.expired).unix() < moment().unix())) {      
@@ -486,10 +501,9 @@ class UserService extends AbstractService {
             }else if(token && token.type !== Model.Token.tokenType.password_reset_token) {
                 super.throwCustomError(token, "Invalid Token!");
             }
-
             const user = await Model.User.getUserById(token.author);
 
-            await user.passwordReset(params.reset);
+            await user.passwordReset(params.passwordReset);
 
             user.update();
 
